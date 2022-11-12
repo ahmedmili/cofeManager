@@ -6,6 +6,9 @@ const { response } = require('express');
 require('dotenv').config()
  const nodemailer = require('nodemailer')
 
+var auth = require('../services/auth');
+var checkRole = require('../services/checkRole');
+
 router.post('/signup',(req,res)=>{
     var user = req.body;
     query = "select email,password,role,status from users where email =?"
@@ -58,14 +61,14 @@ router.post('/login',(req,res)=>{
             }else{
                 return res.status(400).json({message:"somethins went wrong. Please try again later"});
              }
-            // else {
-            //         return res.status(500).json(err)
-            //}
+            
         }
     })
 })
 
-var transporter =  nodemailer.createTestAccount({
+
+// node mailer 
+var transporter =  nodemailer.createTransport({
     service : "gmail",
     auth:{
         user : process.env.EMAIL,
@@ -80,7 +83,7 @@ router.post('/forgetpassword',(req,res)=>{
     connection.query(query,[user.email],(err,result)=>{
         if(!err){
             if(result.length <=0){
-                return res.status(200).json({msg : "Password sent successfully to your email"})
+                return res.status(200).json({msg : "Password sent successfully to your email 11"})
             }else{
                 var mailOptions = {
                     FormData: process.env.EMAIL,
@@ -103,9 +106,65 @@ router.post('/forgetpassword',(req,res)=>{
     })
 })
 
+// get user
+router.get("/get",auth.authToken,checkRole.checkRole,(req,res)=>{
+    var query = "select * from users where role='user'";
+    connection.query(query,(err,result)=>{
+        if(!err){
+            return res.status(200).json(result);
+        }else{
+            return res.status(500).json(err);
+        }
+    });
+});
 
 
+//update user 
+router.patch('/update',auth.authToken,checkRole.checkRole,(req,res)=>{
+    let user = req.body;
+    var query = "update user set status=? where id=?";
+    connection.query(query,[user.status,user.id],(err,result)=>{
+        if(!err){
+            if(result.affectedRow == 0){
+                return res.status(404).json({msg:"user id does not exist"});
+            }
+            return res.status(200).json({msg:"user updated successfully"});
+        }else{
+            return res.status(500).json(err)
+        }
 
+    })
+})
 
+router.get("/checkToken",auth.authToken,checkRole.checkRole, (req,res)=>{
+    return res.status(200).json({msg:"true"})
+})
+
+router.post("/changePassword",(req,res)=>{
+    const user = req.body;
+    const email = res.locals.email;
+    var query = "select * from users where email=? and password=?"
+    connection.query(query,[email,user.oldPassword],(err,result)=>{
+        if(!err){
+            if(result.length<=0){
+                return res.status(400).json({msg:"incorrect old password"})
+            }else if(result[0].password == user.oldPassword){
+                query = "update users set password=? where email=?"
+                connection.query(query,[user.newPassword,email],(err,result)=>{
+                    if(!err){
+                        return res.status(200).json({msg:"password updated Successfully"})
+                    }else{
+                        return res.status(500).json(err)
+                    }
+                })
+
+            }else{
+                return res.status(400).json({msg:"somethings went wrong , please try again later"})
+            }
+        }else{
+            return res.status(500).json(err)
+        }
+    })
+})
 
 module.exports = router;
