@@ -2,14 +2,16 @@ const express = require('express');
 const connection = require('./../connection')
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const { response } = require('express');
 require('dotenv').config()
-
+ const nodemailer = require('nodemailer')
 
 router.post('/signup',(req,res)=>{
     var user = req.body;
     query = "select email,password,role,status from users where email =?"
     connection.query(query,[user.email],(err,result)=>{
         if(!err){
+            // console.log(result.length)
             if(result.length <=0){
                 query = "insert into users(name,contactNumber,email,password,status,role) values (?,?,?,?,'false','user') "
                 connection.query(query,[user.name,user.contactNumber,user.email,user.password],(errr,resultt)=>{
@@ -18,42 +20,92 @@ router.post('/signup',(req,res)=>{
                         return res.status(200).json({message : "sucessfully Registred"})
                     }
                     else{
-                        // console.log(errr)
-                        return res.status(500).json(errr)
+                        console.log(errr)
+                        return res.status(500).json({message :"errr"})
                         // throw errr
                     }
                 })
+            }else{
+                console.log("email existe")
+                return res.send({msg:"email already existe"})
             }
         }
         else{
-            console.log("acc existe")
-            return res.status(400).json({message : "email already existe"})
+            console.log("err contact dev team")
+            return res.status(400).json({message : err})
         }
     })
 })
 
 router.post('/login',(req,res)=>{
     var user = req.body;
-    query = "select email,password,role,status from users where email =?"
-    connection.query(query,[user.name,user.contactNumber,user.email,user.password],(err,result)=>{
+    // console.log(user)
+    query = "select * from users where email =?"
+    connection.query(query,[user.email],(err,result)=>{
         if(!err){
-            // console.log('sucess')
-            if((result.length <= 0) || (result[0].password != user.password)){
+            console.log(result[0].PASSWORD)
+            if((result.length <= 0) || (result[0].PASSWORD != user.password)){
+                // console.log(result)
                 return res.status(401).json({message:"Incorrect Username or Password"})
             }else if (result[0].status === 'false'){
                 return res.status(401).json({message:"wait for admin Approval"})
-            }else if(result[0].password == user.password){
+            }else if(result[0].PASSWORD == user.password){
                 // need code here
+                // return res.status(200).json({message:"sucesse"})
+                const response = { email: result[0].email,role: result[0].role}
+                const ACCESS_TOKEN = jwt.sign(response,process.env.ACCESS_TOKEN,{expiresIn:'8h'})
+                res.status(200).json({token: ACCESS_TOKEN})
             }else{
                 return res.status(400).json({message:"somethins went wrong. Please try again later"});
-            }
-
-        }else {
-                return res.status(500).json(err)
+             }
+            // else {
+            //         return res.status(500).json(err)
+            //}
         }
-    }
-
+    })
 })
+
+var transporter =  nodemailer.createTestAccount({
+    service : "gmail",
+    auth:{
+        user : process.env.EMAIL,
+        pass : process.env.PASSWORD
+    }
+})
+
+
+router.post('/forgetpassword',(req,res)=>{
+    const user = req.body
+    query = "select email,password from users where email=?"
+    connection.query(query,[user.email],(err,result)=>{
+        if(!err){
+            if(result.length <=0){
+                return res.status(200).json({msg : "Password sent successfully to your email"})
+            }else{
+                var mailOptions = {
+                    FormData: process.env.EMAIL,
+                    to:result[0].email,
+                    subject : 'passowr by cafe Manager Sytem',
+                    html : '<p><b>Your Login deyail for Cafe Manager System</b>Email'+result[0].email+'<br> <b>Password</b>'+result[0].password+'<br><a href="http://localhost:4200">Click here to login </a></p>'
+                };
+                transporter.sendMail(mailOptions,function(error,info){
+                    if(error){
+                        console.log(error)
+                    }else{
+                        console.log("Email sent : "+info.response);
+                    }
+                });
+                return res.status(200).json({msg : "Password sent successfully to your email"})
+            }
+        }else{
+            return res.status(500).json(err)
+        }
+    })
+})
+
+
+
+
 
 
 module.exports = router;
