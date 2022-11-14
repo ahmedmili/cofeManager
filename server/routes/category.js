@@ -17,6 +17,25 @@ router.post("/add",auth.authToken,checkRole.checkRole,(req,res)=>{
     })
 })
 
+router.get("/get",auth.authToken,(req,res)=>{
+    query = "select * from category order by name";
+    connection.query(query,(err,result)=>{
+        if(!err){
+            return res.status(200).json(result);
+        }
+        else{
+            return res.status(500).json(err)
+        }
+    })
+})
+
+
+
+
+
+
+
+
 
 
 
