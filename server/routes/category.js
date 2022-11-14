@@ -30,6 +30,25 @@ router.get("/get",auth.authToken,(req,res)=>{
 })
 
 
+router.patch("/update",auth.authToken,checkRole.checkRole,(req,res)=>{
+    let product = req.body;
+    query = "update category set name=? where id=?";
+    connection.query(query,[product.name,product.id],(err,result)=>{
+        if(!err){
+            if(result.affectedRows == 0){
+                return res.status(404).json({msg:"caategory id does not found"})
+            }
+            return res.status(200).json({msg:"Category updated Successfully"});
+        }
+        else{
+            return res.status(500).json(err)
+        }
+    })
+})
+
+
+module.exports = router;
+
 
 
 
