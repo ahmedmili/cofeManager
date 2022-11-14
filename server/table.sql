@@ -29,4 +29,16 @@ CREATE TABLE products(
     FOREIGN KEY (category_id) REFERENCES category(id)
 )
 
+CREATE TABLE bille(
+    id int NOT NULL AUTO_INCREMENT,
+    uuid VARCHAR(200) NOT NULL,
+    name VARCHAR(255) NOt NULL,
+    contactNumber VARCHAR(20) NOT NULL,
+    paymentMethoud VARCHAR(50) NOT NULL,
+    total int NOT NULL,
+    productDetails JSON DEFAULT NULL,
+    createdBy VARCHAR(255) NOT NULL,
+    primary KEY(id)
+
+)
 
