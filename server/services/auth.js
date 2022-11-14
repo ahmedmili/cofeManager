@@ -11,6 +11,7 @@ function authToken(req, res, next) {
     jwt.verify(token, process.env.ACCESS_TOKEN, (err, response) => {
         if (err) return res.sendStatus(403);
         res.local = response
+        console.log(res.local)
         next()
     })
 }

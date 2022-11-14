@@ -122,7 +122,7 @@ router.get("/get",auth.authToken,checkRole.checkRole,(req,res)=>{
 //update user 
 router.patch('/update',auth.authToken,checkRole.checkRole,(req,res)=>{
     let user = req.body;
-    var query = "update user set status=? where id=?";
+    var query = "update users set status=? where id=?";
     connection.query(query,[user.status,user.id],(err,result)=>{
         if(!err){
             if(result.affectedRow == 0){
@@ -140,15 +140,17 @@ router.get("/checkToken",auth.authToken,checkRole.checkRole, (req,res)=>{
     return res.status(200).json({msg:"true"})
 })
 
-router.post("/changePassword",(req,res)=>{
+router.post("/changePassword",auth.authToken,(req,res)=>{
     const user = req.body;
-    const email = res.locals.email;
+    const email = res.local.email;
+    // console.log(email)
     var query = "select * from users where email=? and password=?"
     connection.query(query,[email,user.oldPassword],(err,result)=>{
         if(!err){
+            // console.log(result[0].PASSWORD)
             if(result.length<=0){
                 return res.status(400).json({msg:"incorrect old password"})
-            }else if(result[0].password == user.oldPassword){
+            }else if(result[0].PASSWORD == user.oldPassword){
                 query = "update users set password=? where email=?"
                 connection.query(query,[user.newPassword,email],(err,result)=>{
                     if(!err){
