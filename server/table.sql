@@ -12,7 +12,11 @@ CREATE TABLE users(
 insert INTO users(name,contactNumber,email,PASSWORD,STATUS,role) VALUES('admin','000000','admin@gmail.com','admin','true','admin');
 
 
-
+CREATE TABLE category(
+    id int NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id)
+)
 
 
 
