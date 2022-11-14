@@ -18,5 +18,15 @@ CREATE TABLE category(
     PRIMARY KEY(id)
 )
 
+CREATE TABLE products(
+    id int NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    category_id INTEGER NOT NULL,
+    description VARCHAR(255),
+    price INTEGER,
+    status VARCHAR(20),
+    PRIMARY KEY(id),
+    FOREIGN KEY (category_id) REFERENCES category(id)
+)
 
 
