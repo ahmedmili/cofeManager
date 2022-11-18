@@ -12,11 +12,26 @@ export class UserService {
   constructor(private httpClient: HttpClient) { }
 
   signup(data: any) {
-    console.table(data)
+    // console.table(data)
     return this.httpClient.post(this.url + "/user/signup", data, {
       headers: new HttpHeaders().set('content-type', "application/json")
     })
   }
+  signin(data: any) {
+    // console.table(data)
+    return this.httpClient.post(this.url + "/user/login", data, {
+      headers: new HttpHeaders().set('content-type', "application/json")
+    })
+  }
+
+  forgetPassword(data: any) {
+    console.table(data)
+    return this.httpClient.post(this.url + "/user/forgetPassword", data, {
+      headers: new HttpHeaders().set('content-type', "application/json")
+    })
+  }
+
+
 
 
 

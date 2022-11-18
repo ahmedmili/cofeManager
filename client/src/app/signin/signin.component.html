@@ -1,0 +1,51 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">signup</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+<mat-dialog-content class="mat-typograpgy">
+    <form [formGroup]="signinForm">
+        <div fxFlex fxLayout="column">
+
+            <mat-form-field appearance="fill" fxFlex>
+                <mat-label>email</mat-label>
+                <input type="email" matInput formControlName="email" required>
+                <mat-error *ngIf="signinForm.controls.email.touched && signinForm.controls.email.invalid">
+                    <span *ngIf="signinForm.controls.email.errors.required">this field is mandatoey</span>
+                    <span *ngIf="signinForm.controls.email.errors.pattern">this field is invalid</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" fxFlex>
+                <mat-label>password</mat-label>
+                <input type="password"  matInput formControlName="password" required>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="center">
+    <button
+     mat-raised-button
+        color="primary" 
+        type="submit"
+        (click)="handleSubmit()"
+        [disabled]="!(signinForm.valid && signinForm.dirty)"
+    >Signup</button>
+    
+    <button
+     mat-raised-button
+        color="primary" 
+        mat-dialog-close
+    >close</button>
+
+
+
+
+
+</mat-dialog-actions>
+
+
+
+

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ForgetPasswordComponent } from '../forget-password/forget-password.component';
+import { SigninComponent } from '../signin/signin.component';
 import { SignupComponent } from '../signup/signup.component';
 
 @Component({
@@ -17,5 +19,15 @@ export class HomeComponent implements OnInit {
     const dialogConfig = new MatDialogConfig;
     dialogConfig.width = "550px"
     this.dialog.open(SignupComponent,dialogConfig)
+  }
+  signInAction(){
+    const dialogConfig = new MatDialogConfig;
+    dialogConfig.width = "550px"
+    this.dialog.open(SigninComponent,dialogConfig)
+  }
+  forgetPasswordAction(){
+    const dialogConfig = new MatDialogConfig;
+    dialogConfig.width = "550px"
+    this.dialog.open(ForgetPasswordComponent,dialogConfig)
   }
 }

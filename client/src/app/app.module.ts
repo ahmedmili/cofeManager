@@ -15,6 +15,8 @@ import { AppHeaderComponent } from './layouts/full/header/header.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SignupComponent } from './signup/signup.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { SigninComponent } from './signin/signin.component';
 // import { NgxUiLoaderModule , NgxUiLoaderConfig,SPINNER, PB_DIRECTION } from "ngx-ui-loader"
 
 // const ngxUiLoaderConfig:NgxUiLoaderConfig = {
@@ -37,7 +39,9 @@ import { SignupComponent } from './signup/signup.component';
     FullComponent,
     AppHeaderComponent,
     AppSidebarComponent,
-    SignupComponent
+    SignupComponent,
+    ForgetPasswordComponent,
+    SigninComponent
    ],
   imports: [
     BrowserModule,

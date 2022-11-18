@@ -42,23 +42,25 @@ router.post('/signup',(req,res)=>{
 
 router.post('/login',(req,res)=>{
     var user = req.body;
-    // console.log(user)
+    console.log(user)
     query = "select * from users where email =?"
     connection.query(query,[user.email],(err,result)=>{
         if(!err){
-            console.log(result[0].PASSWORD)
+            // console.log(result)
             if((result.length <= 0) || (result[0].PASSWORD != user.password)){
-                // console.log(result)
+                console.log("Incorrect Username or Password")
                 return res.status(401).json({message:"Incorrect Username or Password"})
             }else if (result[0].status === 'false'){
+                console.log("wait for admin Approval")
                 return res.status(401).json({message:"wait for admin Approval"})
             }else if(result[0].PASSWORD == user.password){
                 // need code here
                 // return res.status(200).json({message:"sucesse"})
                 const response = { email: result[0].email,role: result[0].role}
                 const ACCESS_TOKEN = jwt.sign(response,process.env.ACCESS_TOKEN,{expiresIn:'8h'})
-                res.status(200).json({token: ACCESS_TOKEN})
+                res.status(200).json({token: ACCESS_TOKEN,message:"signed in succe"})
             }else{
+                console.log("somethins went wrong. Please try again later")
                 return res.status(400).json({message:"somethins went wrong. Please try again later"});
              }
             
@@ -69,7 +71,12 @@ router.post('/login',(req,res)=>{
 
 // node mailer 
 var transporter =  nodemailer.createTransport({
-    service : "gmail",
+    // service : "gmail",
+    // host : 'http://smtp.gmail.com',
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
     auth:{
         user : process.env.EMAIL,
         pass : process.env.PASSWORD
@@ -85,6 +92,7 @@ router.post('/forgetpassword',(req,res)=>{
             if(result.length <=0){
                 return res.status(200).json({msg : "Password sent successfully to your email 11"})
             }else{
+                console.log(result[0].email)
                 var mailOptions = {
                     FormData: process.env.EMAIL,
                     to:result[0].email,
