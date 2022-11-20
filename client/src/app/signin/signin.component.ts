@@ -25,7 +25,6 @@ export class SigninComponent implements OnInit {
                 private userService:UserService,
                 private SnackbarService:SnackbarService,
                 private dialogRef:MatDialogRef<SigninComponent>,
-                // private ngxService: NgxUiLoaderService
                 ) { }
 
   ngOnInit(): void {
@@ -37,20 +36,17 @@ export class SigninComponent implements OnInit {
   }
   
   handleSubmit(){
-    // this.ngxService.start()
     var formDate = this.signinForm.value;
     var data ={
       email:formDate.email,
       password:formDate.password
     }
     this.userService.signin(data).subscribe((response:any)=>{
-      // this.ngxService.stop()
       this.dialogRef.close();
       this.responseMessage = response?.message;
       this.SnackbarService.openSnackBar(this.responseMessage,"")
       this.router.navigate(['/']);
     },(error)=>{
-      // this.ngxService.stop()
       if(error.error?.message ){
         this.responseMessage = error.error?.message
       }else{

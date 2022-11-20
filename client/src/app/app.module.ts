@@ -18,19 +18,7 @@ import { SignupComponent } from './signup/signup.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { SigninComponent } from './signin/signin.component';
 import { TokenInterceptorInterceptor } from './services/token-interceptor.interceptor';
-// import { NgxUiLoaderModule , NgxUiLoaderConfig,SPINNER, PB_DIRECTION } from "ngx-ui-loader"
 
-// const ngxUiLoaderConfig:NgxUiLoaderConfig = {
-//   text:"Loading...",
-//   textColor : "#ffffff",
-//   textPosition : "center-center",
-//   bgsColor:"red",
-//   fgsColor:"red",
-//   fgsType: SPINNER.ballSpinClockwise,
-//   fgsSize:100,
-//   pbDirection:PB_DIRECTION.leftToRight,
-//   pbThickness:5
-// }
 
 @NgModule({
   declarations: [	
@@ -53,8 +41,7 @@ import { TokenInterceptorInterceptor } from './services/token-interceptor.interc
     MaterialModule,
     FlexLayoutModule,
     SharedModule,
-    HttpClientModule,
-    // NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
+    HttpClientModule
   ],
   providers: [
     HttpClientModule,
