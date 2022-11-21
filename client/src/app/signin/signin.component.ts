@@ -45,7 +45,9 @@ export class SigninComponent implements OnInit {
       this.dialogRef.close();
       this.responseMessage = response?.message;
       this.SnackbarService.openSnackBar(this.responseMessage,"")
-      this.router.navigate(['/']);
+      localStorage.setItem("token",response.token)
+      this.router.navigate(['/cafe/dashboard']);
+      // console.log(response)
     },(error)=>{
       if(error.error?.message ){
         this.responseMessage = error.error?.message

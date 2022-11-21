@@ -57,7 +57,8 @@ router.post('/login',(req,res)=>{
                 // need code here
                 // return res.status(200).json({message:"sucesse"})
                 const response = { email: result[0].email,role: result[0].role}
-                const ACCESS_TOKEN = jwt.sign(response,process.env.ACCESS_TOKEN,{expiresIn:'8h'})
+                const ACCESS_TOKEN = jwt.sign(response,process.env.ACCESS_TOKEN,{expiresIn:'8h'})   
+                // console.log(ACCESS_TOKEN)
                 res.status(200).json({token: ACCESS_TOKEN,message:"signed in succe"})
             }else{
                 console.log("somethins went wrong. Please try again later")
