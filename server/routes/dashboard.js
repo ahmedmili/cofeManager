@@ -5,11 +5,14 @@ var auth = require('../services/auth');
 
 
 
-router.get("/details",auth.authToken,(req,res,next)=>{
+router.get("/details",
+    auth.authToken,
+    (req,res,next)=>{
     var categoreyCount;
     var productCount;
     var billCount;
-    var query = "sellect count(id) as categoreyCount from categorey";
+    // console.log(req.headers.authorization)
+    var query = "select count(id) as categoreyCount from category";
     
     connection.query(query,(err,results)=>{
         if(!err){
@@ -19,7 +22,7 @@ router.get("/details",auth.authToken,(req,res,next)=>{
         }
     })
     
-    query = "sellect count(id) as productCount from product";
+    query = "select count(id) as productCount from products";
     connection.query(query,(err,results)=>{
         if(!err){
             productCount = results[0].productCount;
@@ -28,7 +31,7 @@ router.get("/details",auth.authToken,(req,res,next)=>{
         }
     })
     
-    query = "sellect count(id) as billCount from bille";
+    query = "select count(id) as billCount from bille";
     connection.query(query,(err,results)=>{
         if(!err){
             billCount = results[0].billCount;
