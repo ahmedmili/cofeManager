@@ -46,7 +46,7 @@ router.post('/login',(req,res)=>{
     query = "select * from users where email =?"
     connection.query(query,[user.email],(err,result)=>{
         if(!err){
-            // console.log(result)
+            console.log(result)
             if((result.length <= 0) || (result[0].PASSWORD != user.password)){
                 console.log("Incorrect Username or Password")
                 return res.status(401).json({message:"Incorrect Username or Password"})
@@ -177,5 +177,6 @@ router.post("/changePassword",auth.authToken,(req,res)=>{
         }
     })
 })
+
 
 module.exports = router;
