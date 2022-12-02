@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Inject} from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-confirmation',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfirmationComponent implements OnInit {
 
-  constructor() { }
+  onEmitStateChange = new EventEmitter();
+  details:any = {};
+  
+  constructor(@Inject(MAT_DIALOG_DATA) public dialogData:any) { }
 
   ngOnInit(): void {
+    if(this.dialogData){
+      this.details = this.dialogData;
+    }
+  }
+
+  handleChangeAction(){
+    this.onEmitStateChange.emit();
   }
 
 }
