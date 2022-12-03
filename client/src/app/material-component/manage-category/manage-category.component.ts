@@ -64,7 +64,22 @@ handleAddAction(){
   })
 }
 
-handleEditAction(value:any){}
+handleEditAction(value:any){
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.data={
+    action:'Edit',
+    data:value
+  }
+  dialogConfig.width = "850px";
+  const dialogRef = this.dialog.open(CategoryComponent,dialogConfig);
+  this.router.events.subscribe(()=>{
+    dialogRef.close()
+  });
+
+  const sub = dialogRef.componentInstance.onEditCategory.subscribe((response)=>{
+    this.tableData()
+  })
+}
 
 
 }
