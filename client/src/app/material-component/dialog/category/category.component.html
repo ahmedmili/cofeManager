@@ -1,1 +1,30 @@
-<p>category works!</p>
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">{{dialogData.action}} Category</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-topography">
+    <form [formGroup]="categoryForm">
+        <div fxFlex fxLayout="column">
+            <div fxLayout="row wrap">  
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" required type="text" >
+                    <mat-error *ngIf="categoryForm.controls.name.touched && categoryForm.controls.name.invalid" >
+                        <span *ngIf="categoryForm.controls.name.errors.required" >this field is mandatory .</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()" [disabled]="!(categoryForm.valid && categoryForm.dirty)">
+        {{action}}
+    </button>
+    <button mat-raised-button color="primary" mat-dialog-close>
+            Close
+    </button>
+</mat-dialog-actions>
