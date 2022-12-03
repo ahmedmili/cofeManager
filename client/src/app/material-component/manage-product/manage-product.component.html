@@ -1,0 +1,61 @@
+<mat-card>
+    <b><span>Manage Product</span></b>
+    <button mat-flat-button color="primary" class="float-right" (click)="handleAddAction()">
+        Add Product
+    </button>
+</mat-card>
+<hr>
+<mat-card>
+    <mat-form-field appearance="fill">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input type="text">
+    </mat-form-field>
+</mat-card>
+<hr>
+
+<div class="response_table">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <th mat-cell *matCellDef="let element">{{element.name}}</th>
+        </ng-container>
+
+        <ng-container matColumnDef="categoryName">
+            <th mat-header-cell *matHeaderCellDef>Category</th>
+            <th mat-cell *matCellDef="let element">{{element.categoryName}}</th>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>description</th>
+            <th mat-cell *matCellDef="let element">{{element.description}}</th>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>Price</th>
+            <th mat-cell *matCellDef="let element">{{element.price}}</th>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <th mat-cell *matCellDef="let element" class="action-link">
+                <button mat-icon-button color="primary" matTooltip="Edit" (click)="handleEditAction(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button color="primary" matTooltip="Delete" (click)="handleDeleteAction(element)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <mat-slide-toggle (change)="onChange($event.checked,element.id)"
+                    matTooltip="Active or Desactive Product" [disabled]="element">
+
+                </mat-slide-toggle>
+            </th>
+        </ng-container>
+        
+
+        <tr mat-header-row *matHeaderCellDef="displayedColumn;sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns:displayedColumn"></tr>
+
+    </table>
+</div>
