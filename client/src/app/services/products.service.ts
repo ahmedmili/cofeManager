@@ -12,19 +12,19 @@ export class ProductsService {
   ) { }
 
   add(data:any){
-    return this.httpClient.post(this.url+"/product/add/",data,{
+    return this.httpClient.post(this.url+"/products/add/",data,{
       headers:new HttpHeaders().set("Content-Type","application/json")
     })
   }
   
   update(data:any){
-    return this.httpClient.patch(this.url+"/product/update/",data,{
+    return this.httpClient.patch(this.url+"/products/update/",data,{
       headers:new HttpHeaders().set("Content-Type","application/json")
     })
   }
  
   updateStatus(data:any){
-    return this.httpClient.patch(this.url+"/product/updateStatus/",data,{
+    return this.httpClient.patch(this.url+"/products/updateStatus/",data,{
       headers:new HttpHeaders().set("Content-Type","application/json")
     })
   }
@@ -34,7 +34,7 @@ export class ProductsService {
   }
 
   delete(id:any){
-    return this.httpClient.patch(this.url+"/product/delete/"+id,{
+    return this.httpClient.delete(this.url+"/products/delete/"+id,{
       headers:new HttpHeaders().set("Content-Type","application/json")
       })
   }
