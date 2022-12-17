@@ -6,7 +6,7 @@ var checkRole = require('../services/checkRole');
 
 router.post("/add", auth.authToken, checkRole.checkRole, (req, res) => {
     let product = req.body;
-    console.log(product)
+    // console.log(product)
     query = "insert into products(name, category_id, description, price, status) value(?,?,?,?,'true')";
     connection.query(query, [product.name, product.catogeryId, product.description, product.price], (err, result) => {
         if (!err) {

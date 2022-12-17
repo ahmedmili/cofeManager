@@ -26,6 +26,12 @@ const MENUITEMS = [
         name: 'Manage product',
         icon: 'inventory_2',
         role: 'admin'
+    },
+    {
+        state: 'order',
+        name: 'Manage order',
+        icon: 'list_alt',
+        role: ''
     }
 ];
 

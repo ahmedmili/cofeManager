@@ -42,11 +42,11 @@ router.post('/signup',(req,res)=>{
 
 router.post('/login',(req,res)=>{
     var user = req.body;
-    console.log(user)
+    // console.log(user)
     query = "select * from users where email =?"
     connection.query(query,[user.email],(err,result)=>{
         if(!err){
-            console.log(result)
+            // console.log(result)
             if((result.length <= 0) || (result[0].PASSWORD != user.password)){
                 console.log("Incorrect Username or Password")
                 return res.status(401).json({message:"Incorrect Username or Password"})
@@ -91,7 +91,7 @@ router.post('/forgetpassword',(req,res)=>{
     connection.query(query,[user.email],(err,result)=>{
         if(!err){
             if(result.length <=0){
-                return res.status(200).json({msg : "Password sent successfully to your email 11"})
+                return res.status(400).json({msg : "Password sent successfully to your email 11"})
             }else{
                 console.log(result[0].email)
                 var mailOptions = {
@@ -176,6 +176,11 @@ router.post("/changePassword",auth.authToken,(req,res)=>{
             return res.status(500).json(err)
         }
     })
+})
+
+router.post('/test',(req,res)=>{
+    console.log('5edmet')
+    res.status(500).json({msg:"success"})
 })
 
 

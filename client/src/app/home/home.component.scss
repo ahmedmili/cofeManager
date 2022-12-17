@@ -117,6 +117,10 @@ body {
 nav {
   display: flex;
   width: 90%;
+  z-index: 9;
+}
+best-seller{
+  z-index: 0;
 }
 
 ul li a {
@@ -161,6 +165,10 @@ a::after {
 a:hover::after {
   right: 0;
   left: 0;
+}
+
+a:hover {
+  cursor: pointer;
 }
 
 @media (max-width: 1024px) {

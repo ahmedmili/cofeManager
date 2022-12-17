@@ -8,36 +8,45 @@ import { environment } from 'src/environments/environment';
 export class ProductsService {
   url = environment.apiUrl;
   constructor(
-    private httpClient:HttpClient
+    private httpClient: HttpClient
   ) { }
 
-  add(data:any){
-    return this.httpClient.post(this.url+"/products/add/",data,{
-      headers:new HttpHeaders().set("Content-Type","application/json")
-    })
-  }
-  
-  update(data:any){
-    return this.httpClient.patch(this.url+"/products/update/",data,{
-      headers:new HttpHeaders().set("Content-Type","application/json")
-    })
-  }
- 
-  updateStatus(data:any){
-    return this.httpClient.patch(this.url+"/products/updateStatus/",data,{
-      headers:new HttpHeaders().set("Content-Type","application/json")
+  add(data: any) {
+    return this.httpClient.post(this.url + "/products/add/", data, {
+      headers: new HttpHeaders().set("Content-Type", "application/json")
     })
   }
 
-  getProducts(){
-    return this.httpClient.get(this.url+"/products/get/")
+  update(data: any) {
+    return this.httpClient.patch(this.url + "/products/update/", data, {
+      headers: new HttpHeaders().set("Content-Type", "application/json")
+    })
   }
 
-  delete(id:any){
-    return this.httpClient.delete(this.url+"/products/delete/"+id,{
-      headers:new HttpHeaders().set("Content-Type","application/json")
-      })
+  updateStatus(data: any) {
+    return this.httpClient.patch(this.url + "/products/updateStatus/", data, {
+      headers: new HttpHeaders().set("Content-Type", "application/json")
+    })
   }
+
+  getProducts() {
+    return this.httpClient.get(this.url + "/products/get/")
+  }
+
+  delete(id: any) {
+    return this.httpClient.delete(this.url + "/products/delete/" + id, {
+      headers: new HttpHeaders().set("Content-Type", "application/json")
+    })
+  }
+
+  getProductsByCategory(id: any) {
+    return this.httpClient.get(this.url + "/product/getByCategory/" + id);
+  }
+
+  getById(id: any) {
+    return this.httpClient.get(this.url + "/product/getById/" + id);
+  }
+
 
 
 
