@@ -3,6 +3,7 @@ import { FormGroup,FormBuilder,Validators } from '@angular/forms';
 import { GlobalConstants } from 'src/app/shared/global-constants';
 
 import {CategoryService} from 'src/app/services/category.service'
+import {BillService} from 'src/app/services/bill.service'
 import {ProductsService} from 'src/app/services/products.service'
 import {SnackbarService} from 'src/app/services/snackbar.service'
 
@@ -25,6 +26,7 @@ export class ManageOrderComponent implements OnInit {
   responseMessage:any;
   constructor(
     private formBuilder:FormBuilder,
+    private billService:BillService,
     private categoryService : CategoryService,
     private productsService:ProductsService,
     private snackbarService: SnackbarService,
@@ -60,7 +62,7 @@ export class ManageOrderComponent implements OnInit {
 
 
   getProductByCategory(value:any){
-    this.productsService.getProductByCategory(value.id).subscribe((response)=>{
+    this.productsService.getProductsByCategory(value.id).subscribe((response)=>{
       this.products = response;
       this.manageOrderForm.controls['price'].setValue('')
       this.manageOrderForm.controls['quantity'].setValue('')
@@ -71,7 +73,7 @@ export class ManageOrderComponent implements OnInit {
       }else{
         this.responseMessage = GlobalConstants.genericError
       }
-      this.snackbarService.openSnackBar(this.responseMessage;GlobalConstants.err)
+      this.snackbarService.openSnackBar(this.responseMessage,GlobalConstants.err)
     })
   }
 
@@ -87,7 +89,7 @@ export class ManageOrderComponent implements OnInit {
       }else{
         this.responseMessage = GlobalConstants.genericError
       }
-      this.snackbarService.openSnackBar(this.responseMessage;GlobalConstants.err)
+      this.snackbarService.openSnackBar(this.responseMessage,GlobalConstants.err)
     })
   }
 
@@ -98,7 +100,7 @@ export class ManageOrderComponent implements OnInit {
 
     }else if(temp != ""){
       this.manageOrderForm.controls['quantity'].setValue("1");
-      this.manageOrderForm.controls['total'].setValue(this.manageOrderForm.controls['quantity'.value * this.manageOrderForm.controls["ptice".value]])
+      this.manageOrderForm.controls['total'].setValue(this.manageOrderForm.controls['quantity'].value * this.manageOrderForm.controls["ptice"].value)
     }
   }
 
@@ -149,9 +151,9 @@ export class ManageOrderComponent implements OnInit {
   handleDeletAction(value:any,element:any){
     this.totalAmount = this.totalAmount - element.total;
     this.dataSource.splice(value,1)
-    tis.dataSource= [... this.dataSource]
+    this.dataSource= [... this.dataSource]
   }
-
+ 
   submitAction(){
     var formData = this.manageOrderForm.value
     var data = {
@@ -160,9 +162,9 @@ export class ManageOrderComponent implements OnInit {
       contactNumber: formData.contactNumber,
       paymentMethod: formData.paymentMethod,
       totalAmount: this.totalAmount,
-      productDetails: JSON.stringfy(this.dataSource)
+      productDetails: JSON.stringify(this.dataSource)
     }
-    this.billService.generateRepoert(data).subscribe((response:any)=>{
+    this.billService.generateReport(data).subscribe((response:any)=>{
       this.downloadFile(response?.uuid)
       this.manageOrderForm.reset()
       this.dataSource = []
@@ -173,19 +175,19 @@ export class ManageOrderComponent implements OnInit {
       }else{
         this.responseMessage = GlobalConstants.genericError
       }
-      this.snackbarService.openSnackBar(this.responseMessage;GlobalConstants.err)
+      this.snackbarService.openSnackBar(this.responseMessage,GlobalConstants.err)
     })
 
-    downloadFile(value:any){
-      var data {
-        uuid : fileName
-      }
-      this.billService.getPdf(data).subscribe((response:any)=>{
-        saveAs(response,fileName+'.pdf')
-        
-      })
-    }
+    
   }
-
+  downloadFile(fileName:any){
+    var data = {
+      uuid : fileName
+    }
+    this.billService.getPDF(data).subscribe((response:any)=>{
+      saveAs(response,fileName+'.pdf')
+      
+    })
+  }
 
 }
