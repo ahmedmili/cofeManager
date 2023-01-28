@@ -78,12 +78,11 @@ router.post("/getPdf",auth.authToken,(req,res)=>{
             totalAmount:orderDetails.totalAmount
         },function(err,results){
             if(err){
-                // console.log("err")
                 return res.status(500).json(err);
             }else{
                 pdf.create(results).toFile(pdfPath,function(err,data){
                     if(err){
-                        // console.log("err");
+                      
                         return res.status(500).json(err);
                     }else{
                         res.contentType("application/pdf");
