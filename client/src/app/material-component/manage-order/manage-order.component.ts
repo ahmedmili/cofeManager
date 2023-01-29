@@ -34,6 +34,7 @@ export class ManageOrderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getCategorys()
     this.manageOrderForm = this.formBuilder.group({
       name:[null,[Validators.required,Validators.pattern(GlobalConstants.nameRegex)]],
       email:[null,[Validators.required,Validators.pattern(GlobalConstants.emailRegex)]],
@@ -61,9 +62,10 @@ export class ManageOrderComponent implements OnInit {
   }
 
 
-  getProductByCategory(value:any){
+  getProductsByCategory(value:any){
     this.productsService.getProductsByCategory(value.id).subscribe((response)=>{
       this.products = response;
+      // console.log(response)
       this.manageOrderForm.controls['price'].setValue('')
       this.manageOrderForm.controls['quantity'].setValue('')
       this.manageOrderForm.controls['total'].setValue(0)
@@ -78,9 +80,9 @@ export class ManageOrderComponent implements OnInit {
   }
 
   getProductDetails(value:any){
-    this.productsService.getById(value.id).subscribe((response)=>{
-      this.products = response;
-      this.manageOrderForm.controls['price'].setValue('')
+    this.productsService.getById(value.id).subscribe((response:any)=>{
+      this.price = response.price;
+      this.manageOrderForm.controls['price'].setValue(response.price )
       this.manageOrderForm.controls['quantity'].setValue('1')
       this.manageOrderForm.controls['total'].setValue(this.price)
     },(error:any)=>{
@@ -164,6 +166,7 @@ export class ManageOrderComponent implements OnInit {
       totalAmount: this.totalAmount,
       productDetails: JSON.stringify(this.dataSource)
     }
+    // console.log(data)
     this.billService.generateReport(data).subscribe((response:any)=>{
       this.downloadFile(response?.uuid)
       this.manageOrderForm.reset()

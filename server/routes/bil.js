@@ -9,16 +9,16 @@ var fs = require("fs");
 var uuid = require("uuid");
 
 var auth = require('../services/auth');
-const { resourceLimits } = require('worker_threads');
+// const { resourceLimits } = require('worker_threads');
 // var checkRole = require('../services/checkRole');
 
 router.post('/generateReport',auth.authToken,(req,res)=>{
     const generateuuid = uuid.v1();
     const orderDetails = req.body;
-    // console.log(orderDetails)
     var productDetailsString = JSON.stringify(orderDetails.productDetails)
-    var productDetailsReport = JSON.parse(productDetailsString);
-    // console.log(productDetailsReport)
+    var productDetailsReport = JSON.parse(orderDetails.productDetails);
+    console.log(typeof(productDetailsReport))
+    
     var query = "insert into bille (name, uuid, contactNumber, paymentMethod, total,productDetails, createdBy) values(?,?,?,?,?,?,?)"
     connection.query(query,[
                             orderDetails.name,
@@ -30,8 +30,8 @@ router.post('/generateReport',auth.authToken,(req,res)=>{
                             res.local.email
             ],(err,result)=>{
         if(!err){
-            // console.log(__dirname)
             ejs.renderFile(path.join(__dirname,"report.ejs"),{
+                // productDetails:orderDetails.productDetails,
                 productDetails:productDetailsReport,
                 name:orderDetails.name,
                 email:orderDetails.email,
